@@ -1,945 +1,1246 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Révolution & Empire : Le Défi CM2</title>
     <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Police lisible et ludique pour enfants -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        /* Polices personnalisées */
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #fef2f2 100%);
-            min-height: 100vh;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        h1, h2, h3, .font-title {
-            font-family: 'Fredoka', sans-serif;
-        }
+      /* Polices personnalisées */
+      body {
+        font-family: "Nunito", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #eff6ff 0%,
+          #ffffff 50%,
+          #fef2f2 100%
+        );
+        min-height: 100vh;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      h1,
+      h2,
+      h3,
+      .font-title {
+        font-family: "Fredoka", sans-serif;
+      }
 
-        /* Effet 3D pour les cartes du Memory */
-        .perspective-1000 {
-            perspective: 1000px;
-        }
-        .transform-style-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
-        }
-        .backface-hidden {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
-        }
+      /* Effet 3D pour les cartes du Memory */
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      .transform-style-3d {
+        transform-style: preserve-3d;
+        transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+      }
+      .backface-hidden {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+      .rotate-y-180 {
+        transform: rotateY(180deg);
+      }
 
-        /* Boutons style jeu avec effet rebond / 3D tactile */
-        .btn-game {
-            transition: all 0.15s ease;
-            box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15);
-        }
-        .btn-game:active:not(:disabled) {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-        }
+      /* Boutons style jeu avec effet rebond / 3D tactile */
+      .btn-game {
+        transition: all 0.15s ease;
+        box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15);
+      }
+      .btn-game:active:not(:disabled) {
+        transform: translateY(4px);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+      }
 
-        /* Animations ludiques */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+      /* Animations ludiques */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
+        50% {
+          transform: translateY(-6px);
         }
+      }
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
         }
-        .animate-shake {
-            animation: shake 0.4s ease-in-out;
+        20%,
+        60% {
+          transform: translateX(-6px);
         }
+        40%,
+        80% {
+          transform: translateX(6px);
+        }
+      }
+      .animate-shake {
+        animation: shake 0.4s ease-in-out;
+      }
 
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+      @keyframes popIn {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
         }
-        .animate-pop {
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        100% {
+          transform: scale(1);
+          opacity: 1;
         }
+      }
+      .animate-pop {
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
 
-        /* Canvas pour les confettis */
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-        }
+      /* Canvas pour les confettis */
+      #confetti-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 50;
+      }
     </style>
-</head>
-<body class="text-slate-800 flex flex-col justify-between">
-
+  </head>
+  <body class="text-slate-800 flex flex-col justify-between">
     <!-- Canvas Confettis -->
     <canvas id="confetti-canvas"></canvas>
 
     <!-- Barre de navigation supérieure -->
-    <header class="w-full bg-white/90 backdrop-blur-md border-b-2 border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-            <!-- Bouton Accueil / Logo -->
-            <button onclick="goHome()" class="flex items-center gap-2.5 text-left group focus:outline-none">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-white to-red-600 p-0.5 shadow-md group-hover:scale-105 transition-transform">
-                    <div class="w-full h-full bg-white rounded-[10px] flex items-center justify-center text-xl">
-                        🇫🇷
-                    </div>
-                </div>
-                <div>
-                    <span class="font-title font-bold text-lg sm:text-xl text-blue-900 block leading-none">Histoire CM2</span>
-                    <span class="text-xs font-bold text-red-600 uppercase tracking-wider">Révolution & Empire</span>
-                </div>
-            </button>
-
-            <!-- Contrôles droite : Accueil + Son -->
-            <div class="flex items-center gap-2 sm:gap-3">
-                <button id="home-nav-btn" onclick="goHome()" class="hidden px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm flex items-center gap-1.5 transition-colors">
-                    <span>🏠</span> <span class="hidden sm:inline">Menu</span>
-                </button>
-                <button id="sound-toggle" onclick="toggleSound()" class="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold transition-colors border border-blue-200" title="Activer/Couper le son" aria-label="Son">
-                    <span id="sound-icon" class="text-lg">🔊</span>
-                </button>
+    <header
+      class="w-full bg-white/90 backdrop-blur-md border-b-2 border-slate-200 sticky top-0 z-30 shadow-sm"
+    >
+      <div
+        class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between"
+      >
+        <!-- Bouton Accueil / Logo -->
+        <button
+          onclick="goHome()"
+          class="flex items-center gap-2.5 text-left group focus:outline-none"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-white to-red-600 p-0.5 shadow-md group-hover:scale-105 transition-transform"
+          >
+            <div
+              class="w-full h-full bg-white rounded-[10px] flex items-center justify-center text-xl"
+            >
+              🇫🇷
             </div>
+          </div>
+          <div>
+            <span
+              class="font-title font-bold text-lg sm:text-xl text-blue-900 block leading-none"
+              >Histoire CM2</span
+            >
+            <span
+              class="text-xs font-bold text-red-600 uppercase tracking-wider"
+              >Révolution & Empire</span
+            >
+          </div>
+        </button>
+
+        <!-- Contrôles droite : Accueil + Son -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button
+            id="home-nav-btn"
+            onclick="goHome()"
+            class="hidden px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm flex items-center gap-1.5 transition-colors"
+          >
+            <span>🏠</span> <span class="hidden sm:inline">Menu</span>
+          </button>
+          <button
+            id="sound-toggle"
+            onclick="toggleSound()"
+            class="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold transition-colors border border-blue-200"
+            title="Activer/Couper le son"
+            aria-label="Son"
+          >
+            <span id="sound-icon" class="text-lg">🔊</span>
+          </button>
         </div>
+      </div>
     </header>
 
     <!-- Conteneur Principal -->
-    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 sm:py-8 flex flex-col justify-center">
+    <main
+      class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 sm:py-8 flex flex-col justify-center"
+    >
+      <!-- ========================================== -->
+      <!-- ÉCRAN 1 : ACCUEIL & CHOIX DU MODE DE JEU   -->
+      <!-- ========================================== -->
+      <section id="screen-home" class="animate-pop">
+        <!-- Bannière titre -->
+        <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100 text-blue-800 font-bold text-sm mb-4 border border-blue-200"
+          >
+            <span>👑</span> <span>1789 – 1815 • Révision interactive</span>
+            <span>🎩</span>
+          </div>
+          <h1
+            class="text-3xl sm:text-5xl font-bold text-slate-900 mb-3 leading-tight"
+          >
+            Maîtrise ta leçon sur la
+            <span class="text-blue-600">Révolution</span> et
+            <span class="text-red-600">Napoléon</span> !
+          </h1>
+          <p class="text-slate-600 text-base sm:text-lg font-medium">
+            Choisis ton mode d'entraînement pour mémoriser les 11 points
+            essentiels du cours avant l'évaluation.
+          </p>
+        </div>
 
-        <!-- ========================================== -->
-        <!-- ÉCRAN 1 : ACCUEIL & CHOIX DU MODE DE JEU   -->
-        <!-- ========================================== -->
-        <section id="screen-home" class="animate-pop">
-            <!-- Bannière titre -->
-            <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100 text-blue-800 font-bold text-sm mb-4 border border-blue-200">
-                    <span>👑</span> <span>1789 – 1815 • Révision interactive</span> <span>🎩</span>
-                </div>
-                <h1 class="text-3xl sm:text-5xl font-bold text-slate-900 mb-3 leading-tight">
-                    Maîtrise ta leçon sur la <span class="text-blue-600">Révolution</span> et <span class="text-red-600">Napoléon</span> !
-                </h1>
-                <p class="text-slate-600 text-base sm:text-lg font-medium">
-                    Choisis ton mode d'entraînement pour mémoriser les 11 points essentiels du cours avant l'évaluation.
-                </p>
+        <!-- Cartes des 2 Modes de jeu -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <!-- Mode 1 : Quiz Défi -->
+          <div
+            class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-blue-200 shadow-xl hover:border-blue-400 transition-all flex flex-col justify-between relative overflow-hidden"
+          >
+            <div
+              class="absolute -right-6 -top-6 text-8xl opacity-10 pointer-events-none"
+            >
+              🏆
             </div>
-
-            <!-- Cartes des 2 Modes de jeu -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                
-                <!-- Mode 1 : Quiz Défi -->
-                <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-blue-200 shadow-xl hover:border-blue-400 transition-all flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 text-8xl opacity-10 pointer-events-none">🏆</div>
-                    <div>
-                        <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 shadow-inner animate-float">
-                            🎯
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Mode Quiz Défi</h2>
-                        <p class="text-slate-600 mb-6 text-sm sm:text-base leading-relaxed">
-                            Réponds aux <strong>11 questions</strong> de la leçon ! Gagne des points de rapidité, lis les explications en cas d'erreur et décroche les 3 étoiles.
-                        </p>
-                    </div>
-                    <button onclick="startQuiz()" class="btn-game w-full py-4 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-title font-bold text-lg sm:text-xl flex items-center justify-center gap-2 cursor-pointer">
-                        <span>Lancer le Quiz</span>
-                        <span>🚀</span>
-                    </button>
-                </div>
-
-                <!-- Mode 2 : Memory des Paires -->
-                <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-red-200 shadow-xl hover:border-red-400 transition-all flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 text-8xl opacity-10 pointer-events-none">🃏</div>
-                    <div>
-                        <div class="w-16 h-16 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-3xl mb-4 shadow-inner animate-float" style="animation-delay: 0.5s;">
-                            🧠
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Mode Memory Paires</h2>
-                        <p class="text-slate-600 mb-6 text-sm sm:text-base leading-relaxed">
-                            Retourne les cartes et associe chaque <strong>question ou date clé</strong> à sa bonne réponse en un minimum de coups !
-                        </p>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex gap-2">
-                            <button onclick="startMemory(6)" class="btn-game flex-1 py-3.5 px-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-white font-title font-bold text-base sm:text-lg cursor-pointer">
-                                Rapide (6 paires)
-                            </button>
-                            <button onclick="startMemory(11)" class="btn-game flex-1 py-3.5 px-3 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-title font-bold text-base sm:text-lg cursor-pointer">
-                                Complet (11 paires)
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div>
+              <div
+                class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 shadow-inner animate-float"
+              >
+                🎯
+              </div>
+              <h2 class="text-2xl font-bold text-slate-900 mb-2">
+                Mode Quiz Défi
+              </h2>
+              <p
+                class="text-slate-600 mb-6 text-sm sm:text-base leading-relaxed"
+              >
+                Réponds aux <strong>11 questions</strong> de la leçon ! Gagne
+                des points de rapidité, lis les explications en cas d'erreur et
+                décroche les 3 étoiles.
+              </p>
             </div>
+            <button
+              onclick="startQuiz()"
+              class="btn-game w-full py-4 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-title font-bold text-lg sm:text-xl flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Lancer le Quiz</span>
+              <span>🚀</span>
+            </button>
+          </div>
 
-            <!-- Aperçu Mémo rapide en bas -->
-            <div class="max-w-4xl mx-auto mt-8 bg-white/80 rounded-2xl p-4 border border-slate-200 flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm font-bold text-slate-600">
-                <span class="flex items-center gap-1.5"><span class="text-base">👑</span> Monarchie absolue</span>
-                <span>•</span>
-                <span class="flex items-center gap-1.5"><span class="text-base">🏰</span> 14 juillet 1789</span>
-                <span>•</span>
-                <span class="flex items-center gap-1.5"><span class="text-base">📜</span> DDHC & 4 août</span>
-                <span>•</span>
-                <span class="flex items-center gap-1.5"><span class="text-base">⚖️</span> République 1792</span>
-                <span>•</span>
-                <span class="flex items-center gap-1.5"><span class="text-base">🎩</span> Napoléon Ier (1804)</span>
+          <!-- Mode 2 : Memory des Paires -->
+          <div
+            class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-red-200 shadow-xl hover:border-red-400 transition-all flex flex-col justify-between relative overflow-hidden"
+          >
+            <div
+              class="absolute -right-6 -top-6 text-8xl opacity-10 pointer-events-none"
+            >
+              🃏
             </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- ÉCRAN 2 : MODE QUIZ CHRONO / DÉFI          -->
-        <!-- ========================================== -->
-        <section id="screen-quiz" class="hidden max-w-3xl mx-auto w-full">
-            <!-- En-tête du Quiz : Progression, Score, Chrono -->
-            <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-200 mb-5">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <span id="quiz-progress-text" class="font-title font-bold text-blue-700 text-base sm:text-lg">
-                        Question 1 / 11
-                    </span>
-                    <div class="flex items-center gap-3">
-                        <span class="px-3 py-1 rounded-xl bg-amber-100 text-amber-800 font-bold text-sm flex items-center gap-1">
-                            <span>⭐</span> <span id="quiz-score">0</span> pts
-                        </span>
-                        <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm flex items-center gap-1">
-                            <span>⏱️</span> <span id="quiz-timer">00:00</span>
-                        </span>
-                    </div>
-                </div>
-                <!-- Barre de progression -->
-                <div class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
-                    <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-red-500 rounded-full transition-all duration-300" style="width: 9%;"></div>
-                </div>
+            <div>
+              <div
+                class="w-16 h-16 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-3xl mb-4 shadow-inner animate-float"
+                style="animation-delay: 0.5s"
+              >
+                🧠
+              </div>
+              <h2 class="text-2xl font-bold text-slate-900 mb-2">
+                Mode Memory Paires
+              </h2>
+              <p
+                class="text-slate-600 mb-6 text-sm sm:text-base leading-relaxed"
+              >
+                Retourne les cartes et associe chaque
+                <strong>question ou date clé</strong> à sa bonne réponse en un
+                minimum de coups !
+              </p>
             </div>
-
-            <!-- Carte de la Question -->
-            <div id="quiz-card" class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200">
-                <div class="flex items-start gap-3 sm:gap-4 mb-6">
-                    <div id="quiz-icon" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-2xl sm:text-3xl shrink-0">
-                        👑
-                    </div>
-                    <div>
-                        <span id="quiz-theme" class="text-xs font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">
-                            L'Ancien Régime
-                        </span>
-                        <h2 id="quiz-question" class="text-xl sm:text-2xl font-bold text-slate-900 mt-2 leading-snug">
-                            Chargement de la question...
-                        </h2>
-                    </div>
-                </div>
-
-                <!-- Liste des choix multiples (QCM) -->
-                <div id="quiz-options" class="space-y-3">
-                    <!-- Généré dynamiquement en JS -->
-                </div>
-
-                <!-- Boîte d'explication / Feedback immédiat -->
-                <div id="quiz-feedback" class="hidden mt-6 p-4 sm:p-5 rounded-2xl border-2 animate-pop">
-                    <div class="flex items-start gap-3">
-                        <span id="feedback-emoji" class="text-2xl sm:text-3xl">🎉</span>
-                        <div class="flex-grow">
-                            <h3 id="feedback-title" class="font-title font-bold text-lg">Bravo !</h3>
-                            <p id="feedback-explanation" class="text-sm sm:text-base mt-1 leading-relaxed"></p>
-                        </div>
-                    </div>
-                    <div class="mt-4 flex justify-end">
-                        <button id="quiz-next-btn" onclick="nextQuestion()" class="btn-game px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-title font-bold text-base sm:text-lg flex items-center gap-2 cursor-pointer">
-                            <span>Question suivante</span>
-                            <span>➡️</span>
-                        </button>
-                    </div>
-                </div>
+            <div class="space-y-3">
+              <div class="flex gap-2">
+                <button
+                  onclick="startMemory(6)"
+                  class="btn-game flex-1 py-3.5 px-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-white font-title font-bold text-base sm:text-lg cursor-pointer"
+                >
+                  Rapide (6 paires)
+                </button>
+                <button
+                  onclick="startMemory(11)"
+                  class="btn-game flex-1 py-3.5 px-3 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-title font-bold text-base sm:text-lg cursor-pointer"
+                >
+                  Complet (11 paires)
+                </button>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
 
-        <!-- ========================================== -->
-        <!-- ÉCRAN 3 : MODE MEMORY (PAIRES Q / R)       -->
-        <!-- ========================================== -->
-        <section id="screen-memory" class="hidden w-full">
-            <!-- Barre d'infos du Memory -->
-            <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-200 mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-2">
-                    <span class="text-2xl">🃏</span>
-                    <div>
-                        <h2 class="font-title font-bold text-lg text-slate-900 leading-none">Memory de la Révolution</h2>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Associe chaque <span class="text-blue-600 font-bold">Question (Bleue)</span> à sa <span class="text-red-600 font-bold">Réponse (Rouge)</span></p>
-                    </div>
-                </div>
+        <!-- Aperçu Mémo rapide en bas -->
+        <div
+          class="max-w-4xl mx-auto mt-8 bg-white/80 rounded-2xl p-4 border border-slate-200 flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm font-bold text-slate-600"
+        >
+          <span class="flex items-center gap-1.5"
+            ><span class="text-base">👑</span> Monarchie absolue</span
+          >
+          <span>•</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="text-base">🏰</span> 14 juillet 1789</span
+          >
+          <span>•</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="text-base">📜</span> DDHC & 4 août</span
+          >
+          <span>•</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="text-base">⚖️</span> République 1792</span
+          >
+          <span>•</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="text-base">🎩</span> Napoléon Ier (1804)</span
+          >
+        </div>
+      </section>
 
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold text-sm">
-                        Paires : <span id="mem-pairs">0</span> / <span id="mem-total">11</span>
-                    </div>
-                    <div class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 font-bold text-sm">
-                        Coups : <span id="mem-moves">0</span>
-                    </div>
-                    <div class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm">
-                        ⏱️ <span id="mem-timer">00:00</span>
-                    </div>
-                    <button onclick="restartMemory()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm" title="Recommencer">
-                        🔄
-                    </button>
-                </div>
+      <!-- ========================================== -->
+      <!-- ÉCRAN 2 : MODE QUIZ CHRONO / DÉFI          -->
+      <!-- ========================================== -->
+      <section id="screen-quiz" class="hidden max-w-3xl mx-auto w-full">
+        <!-- En-tête du Quiz : Progression, Score, Chrono -->
+        <div
+          class="bg-white rounded-2xl p-4 shadow-md border border-slate-200 mb-5"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span
+              id="quiz-progress-text"
+              class="font-title font-bold text-blue-700 text-base sm:text-lg"
+            >
+              Question 1 / 11
+            </span>
+            <div class="flex items-center gap-3">
+              <span
+                class="px-3 py-1 rounded-xl bg-amber-100 text-amber-800 font-bold text-sm flex items-center gap-1"
+              >
+                <span>⭐</span> <span id="quiz-score">0</span> pts
+              </span>
+              <span
+                class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm flex items-center gap-1"
+              >
+                <span>⏱️</span> <span id="quiz-timer">00:00</span>
+              </span>
             </div>
+          </div>
+          <!-- Barre de progression -->
+          <div
+            class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200"
+          >
+            <div
+              id="quiz-progress-bar"
+              class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-red-500 rounded-full transition-all duration-300"
+              style="width: 9%"
+            ></div>
+          </div>
+        </div>
 
-            <!-- Grille de cartes Memory -->
-            <div id="memory-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3">
-                <!-- Généré dynamiquement en JS -->
+        <!-- Carte de la Question -->
+        <div
+          id="quiz-card"
+          class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200"
+        >
+          <div class="flex items-start gap-3 sm:gap-4 mb-6">
+            <div
+              id="quiz-icon"
+              class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-2xl sm:text-3xl shrink-0"
+            >
+              👑
             </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- ÉCRAN 4 : RÉSULTATS & RÉCAPITULATIF LEÇON   -->
-        <!-- ========================================== -->
-        <section id="screen-results" class="hidden max-w-3xl mx-auto w-full animate-pop">
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-blue-200 text-center">
-                <!-- Étoiles -->
-                <div id="result-stars" class="flex justify-center gap-3 text-5xl sm:text-6xl mb-4">
-                    <span>⭐</span><span>⭐</span><span>⭐</span>
-                </div>
-
-                <h2 id="result-title" class="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
-                    Félicitations !
-                </h2>
-                <p id="result-subtitle" class="text-slate-600 text-base sm:text-lg mb-6">
-                    Tu maîtrises parfaitement la leçon sur la Révolution française !
-                </p>
-
-                <!-- Statistiques -->
-                <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-8">
-                    <div class="bg-blue-50 p-3 rounded-2xl border border-blue-100">
-                        <div class="text-xs font-bold text-blue-600 uppercase" id="stat-1-label">Score</div>
-                        <div class="text-xl sm:text-2xl font-title font-bold text-blue-900 mt-1" id="stat-1-val">11/11</div>
-                    </div>
-                    <div class="bg-amber-50 p-3 rounded-2xl border border-amber-100">
-                        <div class="text-xs font-bold text-amber-600 uppercase" id="stat-2-label">Points</div>
-                        <div class="text-xl sm:text-2xl font-title font-bold text-amber-900 mt-1" id="stat-2-val">1100</div>
-                    </div>
-                    <div class="bg-red-50 p-3 rounded-2xl border border-red-100">
-                        <div class="text-xs font-bold text-red-600 uppercase">Temps</div>
-                        <div class="text-xl sm:text-2xl font-title font-bold text-red-900 mt-1" id="stat-3-val">01:24</div>
-                    </div>
-                </div>
-
-                <!-- Boutons d'action -->
-                <div class="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-                    <button id="btn-replay" onclick="replayCurrentMode()" class="btn-game px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-title font-bold text-lg cursor-pointer">
-                        🔄 Rejouer ce mode
-                    </button>
-                    <button onclick="goHome()" class="btn-game px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-title font-bold text-lg cursor-pointer">
-                        🏠 Changer de jeu
-                    </button>
-                </div>
-
-                <!-- Bouton accordéon : Revoir les 11 points de la leçon -->
-                <div class="border-t border-slate-200 pt-5 text-left">
-                    <button onclick="toggleSummary()" class="w-full py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold flex items-center justify-between border border-amber-200 transition-colors">
-                        <span class="flex items-center gap-2"><span>📜</span> <span>Afficher l'aide-mémoire complet (les 11 points)</span></span>
-                        <span id="summary-arrow">▼</span>
-                    </button>
-                    <div id="lesson-summary-list" class="hidden mt-4 space-y-2.5 max-h-80 overflow-y-auto pr-1">
-                        <!-- Injecté par JS -->
-                    </div>
-                </div>
+            <div>
+              <span
+                id="quiz-theme"
+                class="text-xs font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg"
+              >
+                L'Ancien Régime
+              </span>
+              <h2
+                id="quiz-question"
+                class="text-xl sm:text-2xl font-bold text-slate-900 mt-2 leading-snug"
+              >
+                Chargement de la question...
+              </h2>
             </div>
-        </section>
+          </div>
 
+          <!-- Liste des choix multiples (QCM) -->
+          <div id="quiz-options" class="space-y-3">
+            <!-- Généré dynamiquement en JS -->
+          </div>
+
+          <!-- Boîte d'explication / Feedback immédiat -->
+          <div
+            id="quiz-feedback"
+            class="hidden mt-6 p-4 sm:p-5 rounded-2xl border-2 animate-pop"
+          >
+            <div class="flex items-start gap-3">
+              <span id="feedback-emoji" class="text-2xl sm:text-3xl">🎉</span>
+              <div class="flex-grow">
+                <h3 id="feedback-title" class="font-title font-bold text-lg">
+                  Bravo !
+                </h3>
+                <p
+                  id="feedback-explanation"
+                  class="text-sm sm:text-base mt-1 leading-relaxed"
+                ></p>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end">
+              <button
+                id="quiz-next-btn"
+                onclick="nextQuestion()"
+                class="btn-game px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-title font-bold text-base sm:text-lg flex items-center gap-2 cursor-pointer"
+              >
+                <span>Question suivante</span>
+                <span>➡️</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ÉCRAN 3 : MODE MEMORY (PAIRES Q / R)       -->
+      <!-- ========================================== -->
+      <section id="screen-memory" class="hidden w-full">
+        <!-- Barre d'infos du Memory -->
+        <div
+          class="bg-white rounded-2xl p-4 shadow-md border border-slate-200 mb-5 flex flex-wrap items-center justify-between gap-3"
+        >
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🃏</span>
+            <div>
+              <h2
+                class="font-title font-bold text-lg text-slate-900 leading-none"
+              >
+                Memory de la Révolution
+              </h2>
+              <p class="text-xs text-slate-500 font-semibold mt-0.5">
+                Associe chaque
+                <span class="text-blue-600 font-bold">Question (Bleue)</span> à
+                sa <span class="text-red-600 font-bold">Réponse (Rouge)</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 sm:gap-4">
+            <div
+              class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold text-sm"
+            >
+              Paires : <span id="mem-pairs">0</span> /
+              <span id="mem-total">11</span>
+            </div>
+            <div
+              class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 font-bold text-sm"
+            >
+              Coups : <span id="mem-moves">0</span>
+            </div>
+            <div
+              class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm"
+            >
+              ⏱️ <span id="mem-timer">00:00</span>
+            </div>
+            <button
+              onclick="restartMemory()"
+              class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm"
+              title="Recommencer"
+            >
+              🔄
+            </button>
+          </div>
+        </div>
+
+        <!-- Grille de cartes Memory -->
+        <div
+          id="memory-grid"
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3"
+        >
+          <!-- Généré dynamiquement en JS -->
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ÉCRAN 4 : RÉSULTATS & RÉCAPITULATIF LEÇON   -->
+      <!-- ========================================== -->
+      <section
+        id="screen-results"
+        class="hidden max-w-3xl mx-auto w-full animate-pop"
+      >
+        <div
+          class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-blue-200 text-center"
+        >
+          <!-- Étoiles -->
+          <div
+            id="result-stars"
+            class="flex justify-center gap-3 text-5xl sm:text-6xl mb-4"
+          >
+            <span>⭐</span><span>⭐</span><span>⭐</span>
+          </div>
+
+          <h2
+            id="result-title"
+            class="text-3xl sm:text-4xl font-bold text-slate-900 mb-2"
+          >
+            Félicitations !
+          </h2>
+          <p
+            id="result-subtitle"
+            class="text-slate-600 text-base sm:text-lg mb-6"
+          >
+            Tu maîtrises parfaitement la leçon sur la Révolution française !
+          </p>
+
+          <!-- Statistiques -->
+          <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-8">
+            <div class="bg-blue-50 p-3 rounded-2xl border border-blue-100">
+              <div
+                class="text-xs font-bold text-blue-600 uppercase"
+                id="stat-1-label"
+              >
+                Score
+              </div>
+              <div
+                class="text-xl sm:text-2xl font-title font-bold text-blue-900 mt-1"
+                id="stat-1-val"
+              >
+                11/11
+              </div>
+            </div>
+            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-100">
+              <div
+                class="text-xs font-bold text-amber-600 uppercase"
+                id="stat-2-label"
+              >
+                Points
+              </div>
+              <div
+                class="text-xl sm:text-2xl font-title font-bold text-amber-900 mt-1"
+                id="stat-2-val"
+              >
+                1100
+              </div>
+            </div>
+            <div class="bg-red-50 p-3 rounded-2xl border border-red-100">
+              <div class="text-xs font-bold text-red-600 uppercase">Temps</div>
+              <div
+                class="text-xl sm:text-2xl font-title font-bold text-red-900 mt-1"
+                id="stat-3-val"
+              >
+                01:24
+              </div>
+            </div>
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+            <button
+              id="btn-replay"
+              onclick="replayCurrentMode()"
+              class="btn-game px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-title font-bold text-lg cursor-pointer"
+            >
+              🔄 Rejouer ce mode
+            </button>
+            <button
+              onclick="goHome()"
+              class="btn-game px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-title font-bold text-lg cursor-pointer"
+            >
+              🏠 Changer de jeu
+            </button>
+          </div>
+
+          <!-- Bouton accordéon : Revoir les 11 points de la leçon -->
+          <div class="border-t border-slate-200 pt-5 text-left">
+            <button
+              onclick="toggleSummary()"
+              class="w-full py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold flex items-center justify-between border border-amber-200 transition-colors"
+            >
+              <span class="flex items-center gap-2"
+                ><span>📜</span>
+                <span
+                  >Afficher l'aide-mémoire complet (les 11 points)</span
+                ></span
+              >
+              <span id="summary-arrow">▼</span>
+            </button>
+            <div
+              id="lesson-summary-list"
+              class="hidden mt-4 space-y-2.5 max-h-80 overflow-y-auto pr-1"
+            >
+              <!-- Injecté par JS -->
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Pied de page discret -->
     <footer class="text-center py-4 text-xs text-slate-400 font-semibold">
-        Révision Histoire CM2 • La Révolution française et l'Empire
+      Révision Histoire CM2 • La Révolution française et l'Empire
     </footer>
 
     <!-- ========================================== -->
     <!-- LOGIQUE JAVASCRIPT DU JEU                  -->
     <!-- ========================================== -->
     <script>
-        /**
-         * BASE DE DONNÉES PÉDAGOGIQUE : LES 11 NOTIONS EXACTES DU COURS CM2
-         */
-        const LESSON_DATA = [
-            {
-                id: 1,
-                theme: "L'Ancien Régime",
-                icon: "👑",
-                question: "Comment se nomme le règne d'un roi qui détient tous les pouvoirs ?",
-                shortQ: "Règne d'un roi ayant tous les pouvoirs ?",
-                shortA: "La monarchie absolue (l'absolutisme)",
-                options: [
-                    "La monarchie absolue (ou l'absolutisme)",
-                    "La République démocratique",
-                    "L'Empire constitutionnel",
-                    "La monarchie parlementaire"
-                ],
-                correctIndex: 0,
-                explanation: "Sous l'Ancien Régime, le roi (comme Louis XVI) détient tous les pouvoirs (faire les lois, juger, diriger) : c'est la monarchie absolue."
-            },
-            {
-                id: 2,
-                theme: "L'Ancien Régime (XVIIIe siècle)",
-                icon: "🌾",
-                question: "Au XVIIIe siècle, pourquoi le pays est-il pauvre ?",
-                shortQ: "Pourquoi le pays est-il pauvre au XVIIIe s. ?",
-                shortA: "Mauvaises récoltes, famines et impôts injustes",
-                options: [
-                    "À cause de la découverte de l'Amérique",
-                    "À cause des mauvaises récoltes, des famines et des impôts injustes",
-                    "Parce que les nobles travaillent trop peu",
-                    "À cause de l'invasion des Vikings"
-                ],
-                correctIndex: 1,
-                explanation: "Le royaume est ruiné : les mauvaises récoltes provoquent des famines et les impôts injustes pèsent uniquement sur le peuple."
-            },
-            {
-                id: 3,
-                theme: "La société d'ordres",
-                icon: "🔺",
-                question: "Quels sont les 3 ordres de la société sous l'Ancien Régime ?",
-                shortQ: "Quels sont les 3 ordres de la société ?",
-                shortA: "Le clergé, la noblesse et le Tiers État (98 %)",
-                options: [
-                    "Les rois, les chevaliers et les esclaves",
-                    "Les députés, les ministres et les citoyens",
-                    "Le clergé, la noblesse et le Tiers État (98 %)",
-                    "Les bourgeois, les soldats et les marchands"
-                ],
-                correctIndex: 2,
-                explanation: "La société est divisée en 3 ordres : le clergé (Église), la noblesse (seigneurs) et le Tiers État (98 % de la population : paysans, artisans, bourgeois)."
-            },
-            {
-                id: 4,
-                theme: "1789 : La Révolution",
-                icon: "🏰",
-                question: "Que fait le peuple le 14 juillet 1789 pour montrer son mécontentement ?",
-                shortQ: "Que fait le peuple le 14 juillet 1789 ?",
-                shortA: "Il se révolte et prend la prison de la Bastille",
-                options: [
-                    "Il organise des élections présidentielles",
-                    "Il se révolte et prend la prison de la Bastille",
-                    "Il couronne Napoléon Bonaparte",
-                    "Il signe la paix avec l'Angleterre"
-                ],
-                correctIndex: 1,
-                explanation: "Le 14 juillet 1789, le peuple de Paris se révolte et s'empare de la forteresse et prison de la Bastille, symbole du pouvoir absolu du roi."
-            },
-            {
-                id: 5,
-                theme: "1789 : Les changements",
-                icon: "🚫",
-                question: "Qu'est-ce qui est voté à l'Assemblée nationale le 4 août 1789 ?",
-                shortQ: "Que vote-t-on le 4 août 1789 ?",
-                shortA: "L'abolition des privilèges (noblesse et clergé)",
-                options: [
-                    "La création du franc germinal",
-                    "La déclaration de guerre à l'Autriche",
-                    "L'abolition des privilèges de la noblesse et du clergé",
-                    "Le droit de vote pour les femmes"
-                ],
-                correctIndex: 2,
-                explanation: "Dans la nuit du 4 août 1789, les députés votent l'abolition des privilèges : tous les Français doivent désormais payer des impôts."
-            },
-            {
-                id: 6,
-                theme: "1789 : Les textes fondateurs",
-                icon: "📜",
-                question: "Quel document important est ensuite écrit en août 1789 ?",
-                shortQ: "Quel texte important est écrit en août 1789 ?",
-                shortA: "La Déclaration des droits de l'homme et du citoyen",
-                options: [
-                    "La Déclaration des droits de l'homme et du citoyen (DDHC)",
-                    "Le Code civil des Français",
-                    "L'Édit de Nantes",
-                    "La Constitution de la Ve République"
-                ],
-                correctIndex: 0,
-                explanation: "Le 26 août 1789, l'Assemblée adopte la Déclaration des droits de l'homme et du citoyen (DDHC), qui affirme que les hommes naissent libres et égaux."
-            },
-            {
-                id: 7,
-                theme: "La nouvelle organisation",
-                icon: "🗳️",
-                question: "Qui vote désormais les lois à l'Assemblée nationale ?",
-                shortQ: "Qui vote désormais à l'Assemblée nationale ?",
-                shortA: "Les députés élus par les citoyens",
-                options: [
-                    "Le roi et ses ministres uniquement",
-                    "Les seigneurs et les évêques",
-                    "Les députés élus par les citoyens",
-                    "L'armée royale"
-                ],
-                correctIndex: 2,
-                explanation: "Ce n'est plus le roi seul qui décide : ce sont les députés élus par les citoyens qui votent les lois à l'Assemblée nationale."
-            },
-            {
-                id: 8,
-                theme: "1792 : Vers la République",
-                icon: "⚖️",
-                question: "Que fait le roi Louis XVI (fin 1791 - 1792) et quelle en est la conséquence ?",
-                shortQ: "Que fait le roi Louis XVI en 1791-1792 ?",
-                shortA: "Il fuit (Varennes), est jugé ; la République est proclamée",
-                options: [
-                    "Il gagne une grande guerre et retrouve tous ses pouvoirs",
-                    "Il tente de fuir (arrêté à Varennes), est suspendu puis jugé ; la République est proclamée",
-                    "Il part vivre en retraite au château de Versailles",
-                    "Il nomme Napoléon Premier ministre"
-                ],
-                correctIndex: 1,
-                explanation: "Louis XVI tente de fuir à l'étranger (arrêté à Varennes). En 1792, il est suspendu, jugé pour trahison, et la République est proclamée !"
-            },
-            {
-                id: 9,
-                theme: "La République en danger",
-                icon: "⚔️",
-                question: "Comment se nomme la période de conflits (guerres extérieures et civiles) après la mort du roi ?",
-                shortQ: "Période de conflits après la mort du roi ?",
-                shortA: "La Terreur",
-                options: [
-                    "La Belle Époque",
-                    "Les Temps Modernes",
-                    "La Terreur",
-                    "La Renaissance"
-                ],
-                correctIndex: 2,
-                explanation: "Après la mort du roi en 1793, la France fait face aux monarchies européennes et aux guerres civiles : cette période violente s'appelle la Terreur."
-            },
-            {
-                id: 10,
-                theme: "1804 : Le Premier Empire",
-                icon: "🎩",
-                question: "Quel empereur est sacré en 1804 ?",
-                shortQ: "Quel empereur est sacré en 1804 ?",
-                shortA: "Napoléon Bonaparte (Napoléon Ier)",
-                options: [
-                    "Charlemagne",
-                    "Louis XIV",
-                    "Napoléon Bonaparte (Napoléon Ier)",
-                    "Jules César"
-                ],
-                correctIndex: 2,
-                explanation: "Le général Napoléon Bonaparte prend le pouvoir et est sacré Empereur des Français en 1804 sous le nom de Napoléon Ier."
-            },
-            {
-                id: 11,
-                theme: "L'héritage de Napoléon",
-                icon: "📕",
-                question: "Qu'est-ce que Napoléon met en place et qui existe toujours aujourd'hui ?",
-                shortQ: "Création de Napoléon qui existe toujours ?",
-                shortA: "Le Code civil (et lycées, baccalauréat, préfets)",
-                options: [
-                    "Les châteaux forts et les tournois",
-                    "Le Code civil (ainsi que les lycées, le baccalauréat et les préfets)",
-                    "La sécurité sociale et les congés payés",
-                    "L'école gratuite et obligatoire de Jules Ferry"
-                ],
-                correctIndex: 1,
-                explanation: "Napoléon organise durablement la France grâce au Code civil (qui rassemble les lois), aux lycées, au baccalauréat, aux départements et aux préfets."
-            }
-        ];
+      /**
+       * BASE DE DONNÉES PÉDAGOGIQUE : LES 11 NOTIONS EXACTES DU COURS CM2
+       */
+      const LESSON_DATA = [
+        {
+          id: 1,
+          theme: "L'Ancien Régime",
+          icon: "👑",
+          question:
+            "Comment se nomme le règne d'un roi qui détient tous les pouvoirs ?",
+          shortQ: "Règne d'un roi ayant tous les pouvoirs ?",
+          shortA: "La monarchie absolue (l'absolutisme)",
+          options: [
+            "La monarchie absolue (ou l'absolutisme)",
+            "La République démocratique",
+            "L'Empire constitutionnel",
+            "La monarchie parlementaire",
+          ],
+          correctIndex: 0,
+          explanation:
+            "Sous l'Ancien Régime, le roi (comme Louis XVI) détient tous les pouvoirs (faire les lois, juger, diriger) : c'est la monarchie absolue.",
+        },
+        {
+          id: 2,
+          theme: "L'Ancien Régime (XVIIIe siècle)",
+          icon: "🌾",
+          question: "Au XVIIIe siècle, pourquoi le pays est-il pauvre ?",
+          shortQ: "Pourquoi le pays est-il pauvre au XVIIIe s. ?",
+          shortA: "Le roi dépense plus d'argent qu'il n'en gagne",
+          options: [
+            "À cause de la découverte de l'Amérique",
+            "Le roi dépense plus d'argent qu'il n'en gagne",
+            "Parce que les nobles travaillent trop peu",
+            "À cause de l'invasion des Vikings",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Le royaume est ruiné : les mauvaises récoltes provoquent des famines et les impôts injustes pèsent uniquement sur le peuple.",
+        },
+        {
+          id: 3,
+          theme: "La société d'ordres",
+          icon: "🔺",
+          question:
+            "Quels sont les 3 ordres de la société sous l'Ancien Régime ?",
+          shortQ: "Quels sont les 3 ordres de la société ?",
+          shortA: "Le clergé, la noblesse et le Tiers État (98 %)",
+          options: [
+            "Les rois, les chevaliers et les esclaves",
+            "Les députés, les ministres et les citoyens",
+            "Le clergé, la noblesse et le Tiers État (98 %)",
+            "Les bourgeois, les soldats et les marchands",
+          ],
+          correctIndex: 2,
+          explanation:
+            "La société est divisée en 3 ordres : le clergé (Église), la noblesse (seigneurs) et le Tiers État (98 % de la population : paysans, artisans, bourgeois).",
+        },
+        {
+          id: 4,
+          theme: "1789 : La Révolution",
+          icon: "🏰",
+          question:
+            "Que fait le peuple le 14 juillet 1789 pour montrer son mécontentement ?",
+          shortQ: "Que fait le peuple le 14 juillet 1789 ?",
+          shortA: "Il se révolte et prend la prison de la Bastille",
+          options: [
+            "Il organise des élections présidentielles",
+            "Il se révolte et prend la prison de la Bastille",
+            "Il couronne Napoléon Bonaparte",
+            "Il signe la paix avec l'Angleterre",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Le 14 juillet 1789, le peuple de Paris se révolte et s'empare de la forteresse et prison de la Bastille, symbole du pouvoir absolu du roi.",
+        },
+        {
+          id: 5,
+          theme: "1789 : Les changements",
+          icon: "🚫",
+          question:
+            "Qu'est-ce qui est voté à l'Assemblée nationale le 4 août 1789 ?",
+          shortQ: "Que vote-t-on le 4 août 1789 ?",
+          shortA: "L'abolition des privilèges",
+          options: [
+            "La création du franc germinal",
+            "La déclaration de guerre à l'Autriche",
+            "L'abolition des privilèges",
+            "Le droit de vote pour les femmes",
+          ],
+          correctIndex: 2,
+          explanation:
+            "Dans la nuit du 4 août 1789, les députés votent l'abolition des privilèges : tous les Français doivent désormais payer des impôts.",
+        },
+        {
+          id: 6,
+          theme: "1789 : Les textes fondateurs",
+          icon: "📜",
+          question: "Quel document important est ensuite écrit en août 1789 ?",
+          shortQ: "Quel texte important est écrit en août 1789 ?",
+          shortA: "La Déclaration des droits de l'homme et du citoyen",
+          options: [
+            "La Déclaration des droits de l'homme et du citoyen",
+            "Le Code civil des Français",
+            "L'Édit de Nantes",
+            "La Constitution de la Ve République",
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le 26 août 1789, l'Assemblée adopte la Déclaration des droits de l'homme et du citoyen (DDHC), qui affirme que les hommes naissent libres et égaux.",
+        },
+        {
+          id: 7,
+          theme: "La nouvelle organisation",
+          icon: "🗳️",
+          question: "Qui vote désormais les lois à l'Assemblée nationale ?",
+          shortQ: "Qui vote désormais à l'Assemblée nationale ?",
+          shortA: "Les députés élus par les citoyens",
+          options: [
+            "Le roi et ses ministres uniquement",
+            "Les seigneurs et les évêques",
+            "Les députés élus par les citoyens",
+            "L'armée royale",
+          ],
+          correctIndex: 2,
+          explanation:
+            "Ce n'est plus le roi seul qui décide : ce sont les députés élus par les citoyens qui votent les lois à l'Assemblée nationale.",
+        },
+        {
+          id: 8,
+          theme: "1792 : Vers la République",
+          icon: "⚖️",
+          question:
+            "Que fait le roi Louis XVI (fin 1791 - 1792) et quelle en est la conséquence ?",
+          shortQ: "Que fait le roi Louis XVI en 1791-1792 ?",
+          shortA:
+            "Il fuit (Varennes), est jugé et guillotiné ; la République est proclamée",
+          options: [
+            "Il gagne une grande guerre et retrouve tous ses pouvoirs",
+            "Il tente de fuir (arrêté à Varennes), est suspendu puis jugé et guillotiné; la République est proclamée",
+            "Il part vivre en retraite au château de Versailles",
+            "Il nomme Napoléon Premier ministre",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Louis XVI tente de fuir à l'étranger (arrêté à Varennes). En 1792, il est suspendu, jugé pour trahison, et la République est proclamée !",
+        },
+        {
+          id: 9,
+          theme: "La République en danger",
+          icon: "⚔️",
+          question:
+            "Comment se nomme la période de conflits (guerres extérieures et civiles) après la mort du roi ?",
+          shortQ: "Période de conflits après la mort du roi ?",
+          shortA: "La Terreur",
+          options: [
+            "La Belle Époque",
+            "Les Temps Modernes",
+            "La Terreur",
+            "La Renaissance",
+          ],
+          correctIndex: 2,
+          explanation:
+            "Après la mort du roi en 1793, la France fait face aux monarchies européennes et aux guerres civiles : cette période violente s'appelle la Terreur.",
+        },
+        {
+          id: 10,
+          theme: "1804 : Le Premier Empire",
+          icon: "🎩",
+          question: "Quel empereur est sacré en 1804 ?",
+          shortQ: "Quel empereur est sacré en 1804 ?",
+          shortA: "Napoléon Bonaparte (Napoléon Ier)",
+          options: [
+            "Charlemagne",
+            "Louis XIV",
+            "Napoléon Bonaparte (Napoléon Ier)",
+            "Jules César",
+          ],
+          correctIndex: 2,
+          explanation:
+            "Le général Napoléon Bonaparte prend le pouvoir et est sacré Empereur des Français en 1804 sous le nom de Napoléon Ier.",
+        },
+        {
+          id: 11,
+          theme: "L'héritage de Napoléon",
+          icon: "📕",
+          question:
+            "Qu'est-ce que Napoléon met en place et qui existe toujours aujourd'hui ?",
+          shortQ: "Création de Napoléon qui existe toujours ?",
+          shortA: "Le Code civil (et lycées, baccalauréat, préfets)",
+          options: [
+            "Les châteaux forts et les tournois",
+            "Le Code civil (ainsi que les lycées, le baccalauréat et les préfets)",
+            "La sécurité sociale et les congés payés",
+            "L'école gratuite et obligatoire de Jules Ferry",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Napoléon organise durablement la France grâce au Code civil (qui rassemble les lois), aux lycées, au baccalauréat, aux départements et aux préfets.",
+        },
+      ];
 
-        /**
-         * GESTIONNAIRE AUDIO (WEB AUDIO API - SANS FICHIERS EXTERNES)
-         */
-        let soundEnabled = true;
-        let audioCtx = null;
+      /**
+       * GESTIONNAIRE AUDIO (WEB AUDIO API - SANS FICHIERS EXTERNES)
+       */
+      let soundEnabled = true;
+      let audioCtx = null;
 
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+      function initAudio() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-
-        function playTone(freq, type, duration, delay = 0, vol = 0.15) {
-            if (!soundEnabled) return;
-            try {
-                initAudio();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
-                
-                gain.gain.setValueAtTime(vol, audioCtx.currentTime + delay);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.start(audioCtx.currentTime + delay);
-                osc.stop(audioCtx.currentTime + delay + duration);
-            } catch (e) {
-                // Ignorer si le navigateur bloque l'audio avant interaction
-            }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
         }
+      }
 
-        const SFX = {
-            click: () => playTone(520, 'sine', 0.08, 0, 0.1),
-            flip: () => playTone(380, 'triangle', 0.1, 0, 0.1),
-            correct: () => {
-                playTone(523.25, 'sine', 0.15, 0, 0.15);     // Do
-                playTone(659.25, 'sine', 0.15, 0.08, 0.15);  // Mi
-                playTone(783.99, 'sine', 0.25, 0.16, 0.15);  // Sol
-            },
-            wrong: () => {
-                playTone(260, 'sawtooth', 0.18, 0, 0.12);
-                playTone(210, 'sawtooth', 0.25, 0.14, 0.12);
-            },
-            win: () => {
-                const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((n, i) => playTone(n, 'triangle', 0.25, i * 0.1, 0.18));
-            }
-        };
+      function playTone(freq, type, duration, delay = 0, vol = 0.15) {
+        if (!soundEnabled) return;
+        try {
+          initAudio();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
 
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
-            if (soundEnabled) SFX.click();
+          gain.gain.setValueAtTime(vol, audioCtx.currentTime + delay);
+          gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioCtx.currentTime + delay + duration,
+          );
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start(audioCtx.currentTime + delay);
+          osc.stop(audioCtx.currentTime + delay + duration);
+        } catch (e) {
+          // Ignorer si le navigateur bloque l'audio avant interaction
         }
+      }
 
-        /**
-         * NAVIGATION ENTRE LES ÉCRANS
-         */
-        let currentMode = null; // 'quiz' ou 'memory'
-        let timerInterval = null;
-        let secondsElapsed = 0;
+      const SFX = {
+        click: () => playTone(520, "sine", 0.08, 0, 0.1),
+        flip: () => playTone(380, "triangle", 0.1, 0, 0.1),
+        correct: () => {
+          playTone(523.25, "sine", 0.15, 0, 0.15); // Do
+          playTone(659.25, "sine", 0.15, 0.08, 0.15); // Mi
+          playTone(783.99, "sine", 0.25, 0.16, 0.15); // Sol
+        },
+        wrong: () => {
+          playTone(260, "sawtooth", 0.18, 0, 0.12);
+          playTone(210, "sawtooth", 0.25, 0.14, 0.12);
+        },
+        win: () => {
+          const notes = [523.25, 659.25, 783.99, 1046.5];
+          notes.forEach((n, i) => playTone(n, "triangle", 0.25, i * 0.1, 0.18));
+        },
+      };
 
-        function showScreen(screenId) {
-            ['screen-home', 'screen-quiz', 'screen-memory', 'screen-results'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
+      function toggleSound() {
+        soundEnabled = !soundEnabled;
+        document.getElementById("sound-icon").textContent = soundEnabled
+          ? "🔊"
+          : "🔇";
+        if (soundEnabled) SFX.click();
+      }
 
-            const homeBtn = document.getElementById('home-nav-btn');
-            if (screenId === 'screen-home') {
-                homeBtn.classList.add('hidden');
-                stopTimer();
-                stopConfetti();
-            } else {
-                homeBtn.classList.remove('hidden');
-            }
+      /**
+       * NAVIGATION ENTRE LES ÉCRANS
+       */
+      let currentMode = null; // 'quiz' ou 'memory'
+      let timerInterval = null;
+      let secondsElapsed = 0;
+
+      function showScreen(screenId) {
+        [
+          "screen-home",
+          "screen-quiz",
+          "screen-memory",
+          "screen-results",
+        ].forEach((id) => {
+          document.getElementById(id).classList.add("hidden");
+        });
+        document.getElementById(screenId).classList.remove("hidden");
+
+        const homeBtn = document.getElementById("home-nav-btn");
+        if (screenId === "screen-home") {
+          homeBtn.classList.add("hidden");
+          stopTimer();
+          stopConfetti();
+        } else {
+          homeBtn.classList.remove("hidden");
         }
+      }
 
-        function goHome() {
-            SFX.click();
-            showScreen('screen-home');
+      function goHome() {
+        SFX.click();
+        showScreen("screen-home");
+      }
+
+      function startTimer(displayId) {
+        stopTimer();
+        secondsElapsed = 0;
+        updateTimerDisplay(displayId);
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          updateTimerDisplay(displayId);
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
         }
+      }
 
-        function startTimer(displayId) {
-            stopTimer();
-            secondsElapsed = 0;
-            updateTimerDisplay(displayId);
-            timerInterval = setInterval(() => {
-                secondsElapsed++;
-                updateTimerDisplay(displayId);
-            }, 1000);
-        }
+      function formatTime(sec) {
+        const m = Math.floor(sec / 60)
+          .toString()
+          .padStart(2, "0");
+        const s = (sec % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+      }
 
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-        }
+      function updateTimerDisplay(displayId) {
+        const el = document.getElementById(displayId);
+        if (el) el.textContent = formatTime(secondsElapsed);
+      }
 
-        function formatTime(sec) {
-            const m = Math.floor(sec / 60).toString().padStart(2, '0');
-            const s = (sec % 60).toString().padStart(2, '0');
-            return `${m}:${s}`;
-        }
+      /**
+       * ==========================================
+       * MODE 1 : QUIZ CHRONO / DÉFI
+       * ==========================================
+       */
+      let quizQuestions = [];
+      let currentQIndex = 0;
+      let quizScore = 0;
+      let quizCorrectCount = 0;
+      let questionStartTime = 0;
+      let answeredCurrent = false;
 
-        function updateTimerDisplay(displayId) {
-            const el = document.getElementById(displayId);
-            if (el) el.textContent = formatTime(secondsElapsed);
-        }
+      function startQuiz() {
+        SFX.click();
+        currentMode = "quiz";
+        // On garde l'ordre chronologique de la leçon pour faciliter la mémorisation
+        quizQuestions = [...LESSON_DATA];
+        currentQIndex = 0;
+        quizScore = 0;
+        quizCorrectCount = 0;
 
-        /**
-         * ==========================================
-         * MODE 1 : QUIZ CHRONO / DÉFI
-         * ==========================================
-         */
-        let quizQuestions = [];
-        let currentQIndex = 0;
-        let quizScore = 0;
-        let quizCorrectCount = 0;
-        let questionStartTime = 0;
-        let answeredCurrent = false;
+        document.getElementById("quiz-score").textContent = "0";
+        showScreen("screen-quiz");
+        startTimer("quiz-timer");
+        renderQuizQuestion();
+      }
 
-        function startQuiz() {
-            SFX.click();
-            currentMode = 'quiz';
-            // On garde l'ordre chronologique de la leçon pour faciliter la mémorisation
-            quizQuestions = [...LESSON_DATA];
-            currentQIndex = 0;
-            quizScore = 0;
-            quizCorrectCount = 0;
+      function renderQuizQuestion() {
+        answeredCurrent = false;
+        questionStartTime = Date.now();
+        const q = quizQuestions[currentQIndex];
 
-            document.getElementById('quiz-score').textContent = '0';
-            showScreen('screen-quiz');
-            startTimer('quiz-timer');
-            renderQuizQuestion();
-        }
+        // Mise à jour progression
+        document.getElementById("quiz-progress-text").textContent =
+          `Question ${currentQIndex + 1} / ${quizQuestions.length}`;
+        const pct = ((currentQIndex + 1) / quizQuestions.length) * 100;
+        document.getElementById("quiz-progress-bar").style.width = `${pct}%`;
 
-        function renderQuizQuestion() {
-            answeredCurrent = false;
-            questionStartTime = Date.now();
-            const q = quizQuestions[currentQIndex];
+        // Texte et icône
+        document.getElementById("quiz-icon").textContent = q.icon;
+        document.getElementById("quiz-theme").textContent = q.theme;
+        document.getElementById("quiz-question").textContent = q.question;
 
-            // Mise à jour progression
-            document.getElementById('quiz-progress-text').textContent = `Question ${currentQIndex + 1} / ${quizQuestions.length}`;
-            const pct = ((currentQIndex + 1) / quizQuestions.length) * 100;
-            document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
+        // Masquer le feedback
+        const fb = document.getElementById("quiz-feedback");
+        fb.classList.add("hidden");
 
-            // Texte et icône
-            document.getElementById('quiz-icon').textContent = q.icon;
-            document.getElementById('quiz-theme').textContent = q.theme;
-            document.getElementById('quiz-question').textContent = q.question;
+        // Mélanger l'affichage des options tout en gardant trace de la bonne réponse
+        const indexedOptions = q.options.map((text, idx) => ({
+          text,
+          isCorrect: idx === q.correctIndex,
+        }));
+        shuffleArray(indexedOptions);
 
-            // Masquer le feedback
-            const fb = document.getElementById('quiz-feedback');
-            fb.classList.add('hidden');
+        const optionsContainer = document.getElementById("quiz-options");
+        optionsContainer.innerHTML = "";
 
-            // Mélanger l'affichage des options tout en gardant trace de la bonne réponse
-            const indexedOptions = q.options.map((text, idx) => ({
-                text,
-                isCorrect: idx === q.correctIndex
-            }));
-            shuffleArray(indexedOptions);
-
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
-
-            const letters = ['A', 'B', 'C', 'D'];
-            indexedOptions.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'btn-game w-full text-left p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-400 font-bold text-slate-800 text-base sm:text-lg flex items-center gap-3.5 cursor-pointer transition-all';
-                btn.innerHTML = `
+        const letters = ["A", "B", "C", "D"];
+        indexedOptions.forEach((opt, i) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "btn-game w-full text-left p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-400 font-bold text-slate-800 text-base sm:text-lg flex items-center gap-3.5 cursor-pointer transition-all";
+          btn.innerHTML = `
                     <span class="w-9 h-9 rounded-xl bg-white border-2 border-slate-300 text-slate-700 font-title flex items-center justify-center shrink-0 text-base">
                         ${letters[i]}
                     </span>
                     <span class="leading-snug">${opt.text}</span>
                 `;
-                btn.onclick = () => handleQuizAnswer(btn, opt.isCorrect, indexedOptions);
-                optionsContainer.appendChild(btn);
-            });
+          btn.onclick = () =>
+            handleQuizAnswer(btn, opt.isCorrect, indexedOptions);
+          optionsContainer.appendChild(btn);
+        });
+      }
+
+      function handleQuizAnswer(selectedBtn, isCorrect, allOptions) {
+        if (answeredCurrent) return;
+        answeredCurrent = true;
+
+        const q = quizQuestions[currentQIndex];
+        const buttons = document
+          .getElementById("quiz-options")
+          .querySelectorAll("button");
+
+        // Désactiver tous les boutons et révéler la bonne réponse
+        buttons.forEach((btn, idx) => {
+          btn.disabled = true;
+          btn.classList.remove("hover:bg-blue-50", "hover:border-blue-400");
+          const optData = allOptions[idx];
+
+          if (optData.isCorrect) {
+            btn.classList.remove("bg-slate-50", "border-slate-200");
+            btn.classList.add(
+              "bg-emerald-100",
+              "border-emerald-500",
+              "text-emerald-950",
+            );
+            btn
+              .querySelector("span:first-child")
+              .classList.add(
+                "bg-emerald-500",
+                "text-white",
+                "border-emerald-500",
+              );
+            btn.querySelector("span:first-child").textContent = "✓";
+          } else if (btn === selectedBtn && !isCorrect) {
+            btn.classList.remove("bg-slate-50", "border-slate-200");
+            btn.classList.add(
+              "bg-red-100",
+              "border-red-500",
+              "text-red-950",
+              "animate-shake",
+            );
+            btn
+              .querySelector("span:first-child")
+              .classList.add("bg-red-500", "text-white", "border-red-500");
+            btn.querySelector("span:first-child").textContent = "✕";
+          } else {
+            btn.classList.add("opacity-60");
+          }
+        });
+
+        // Calcul du score et feedback
+        const fb = document.getElementById("quiz-feedback");
+        const fbEmoji = document.getElementById("feedback-emoji");
+        const fbTitle = document.getElementById("feedback-title");
+        const fbExp = document.getElementById("feedback-explanation");
+
+        fb.classList.remove(
+          "hidden",
+          "bg-emerald-50",
+          "border-emerald-300",
+          "text-emerald-900",
+          "bg-red-50",
+          "border-red-300",
+          "text-red-900",
+        );
+
+        if (isCorrect) {
+          SFX.correct();
+          quizCorrectCount++;
+          // Bonus rapidité (jusqu'à +50 pts si répondu en moins de 10s)
+          const elapsedSec = (Date.now() - questionStartTime) / 1000;
+          const speedBonus = Math.max(0, Math.round(50 - elapsedSec * 4));
+          const gained = 100 + speedBonus;
+          quizScore += gained;
+          document.getElementById("quiz-score").textContent = quizScore;
+
+          fb.classList.add(
+            "bg-emerald-50",
+            "border-emerald-300",
+            "text-emerald-900",
+          );
+          fbEmoji.textContent = "🎉";
+          fbTitle.textContent = `Bonne réponse ! (+${gained} pts)`;
+        } else {
+          SFX.wrong();
+          fb.classList.add("bg-red-50", "border-red-300", "text-red-900");
+          fbEmoji.textContent = "💡";
+          fbTitle.textContent = "Oups, retiens bien ceci :";
         }
 
-        function handleQuizAnswer(selectedBtn, isCorrect, allOptions) {
-            if (answeredCurrent) return;
-            answeredCurrent = true;
+        fbExp.textContent = q.explanation;
 
-            const q = quizQuestions[currentQIndex];
-            const buttons = document.getElementById('quiz-options').querySelectorAll('button');
+        // Texte du bouton suivant
+        const nextBtn = document.getElementById("quiz-next-btn");
+        if (currentQIndex === quizQuestions.length - 1) {
+          nextBtn.innerHTML = `<span>Voir mon résultat</span> <span>🏆</span>`;
+        } else {
+          nextBtn.innerHTML = `<span>Question suivante</span> <span>➡️</span>`;
+        }
+      }
 
-            // Désactiver tous les boutons et révéler la bonne réponse
-            buttons.forEach((btn, idx) => {
-                btn.disabled = true;
-                btn.classList.remove('hover:bg-blue-50', 'hover:border-blue-400');
-                const optData = allOptions[idx];
+      function nextQuestion() {
+        SFX.click();
+        currentQIndex++;
+        if (currentQIndex < quizQuestions.length) {
+          renderQuizQuestion();
+        } else {
+          finishQuiz();
+        }
+      }
 
-                if (optData.isCorrect) {
-                    btn.classList.remove('bg-slate-50', 'border-slate-200');
-                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-950');
-                    btn.querySelector('span:first-child').classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
-                    btn.querySelector('span:first-child').textContent = '✓';
-                } else if (btn === selectedBtn && !isCorrect) {
-                    btn.classList.remove('bg-slate-50', 'border-slate-200');
-                    btn.classList.add('bg-red-100', 'border-red-500', 'text-red-950', 'animate-shake');
-                    btn.querySelector('span:first-child').classList.add('bg-red-500', 'text-white', 'border-red-500');
-                    btn.querySelector('span:first-child').textContent = '✕';
-                } else {
-                    btn.classList.add('opacity-60');
-                }
-            });
+      function finishQuiz() {
+        stopTimer();
+        SFX.win();
+        launchConfetti();
 
-            // Calcul du score et feedback
-            const fb = document.getElementById('quiz-feedback');
-            const fbEmoji = document.getElementById('feedback-emoji');
-            const fbTitle = document.getElementById('feedback-title');
-            const fbExp = document.getElementById('feedback-explanation');
-
-            fb.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'text-emerald-900', 'bg-red-50', 'border-red-300', 'text-red-900');
-
-            if (isCorrect) {
-                SFX.correct();
-                quizCorrectCount++;
-                // Bonus rapidité (jusqu'à +50 pts si répondu en moins de 10s)
-                const elapsedSec = (Date.now() - questionStartTime) / 1000;
-                const speedBonus = Math.max(0, Math.round(50 - elapsedSec * 4));
-                const gained = 100 + speedBonus;
-                quizScore += gained;
-                document.getElementById('quiz-score').textContent = quizScore;
-
-                fb.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
-                fbEmoji.textContent = '🎉';
-                fbTitle.textContent = `Bonne réponse ! (+${gained} pts)`;
-            } else {
-                SFX.wrong();
-                fb.classList.add('bg-red-50', 'border-red-300', 'text-red-900');
-                fbEmoji.textContent = '💡';
-                fbTitle.textContent = "Oups, retiens bien ceci :";
-            }
-
-            fbExp.textContent = q.explanation;
-
-            // Texte du bouton suivant
-            const nextBtn = document.getElementById('quiz-next-btn');
-            if (currentQIndex === quizQuestions.length - 1) {
-                nextBtn.innerHTML = `<span>Voir mon résultat</span> <span>🏆</span>`;
-            } else {
-                nextBtn.innerHTML = `<span>Question suivante</span> <span>➡️</span>`;
-            }
+        const ratio = quizCorrectCount / quizQuestions.length;
+        let stars = "⭐";
+        let title = "Continue tes efforts !";
+        if (ratio >= 0.85) {
+          stars = "⭐⭐⭐";
+          title = "Champion de l'Histoire !";
+        } else if (ratio >= 0.55) {
+          stars = "⭐⭐";
+          title = "Très bon travail !";
         }
 
-        function nextQuestion() {
-            SFX.click();
-            currentQIndex++;
-            if (currentQIndex < quizQuestions.length) {
-                renderQuizQuestion();
-            } else {
-                finishQuiz();
-            }
+        showResults({
+          stars,
+          title,
+          subtitle: `Tu as trouvé ${quizCorrectCount} bonnes réponses sur ${quizQuestions.length} questions.`,
+          stat1Label: "Réussite",
+          stat1Val: `${quizCorrectCount}/${quizQuestions.length}`,
+          stat2Label: "Score",
+          stat2Val: `${quizScore} pts`,
+          stat3Val: formatTime(secondsElapsed),
+        });
+      }
+
+      /**
+       * ==========================================
+       * MODE 2 : MEMORY (PAIRES Q / R)
+       * ==========================================
+       */
+      let memPairCount = 11;
+      let memCards = [];
+      let flippedCards = [];
+      let matchedPairs = 0;
+      let memMoves = 0;
+      let lockBoard = false;
+
+      function startMemory(pairCount) {
+        SFX.click();
+        currentMode = "memory";
+        memPairCount = pairCount;
+        setupMemoryBoard();
+        showScreen("screen-memory");
+        startTimer("mem-timer");
+      }
+
+      function restartMemory() {
+        SFX.click();
+        setupMemoryBoard();
+        startTimer("mem-timer");
+      }
+
+      function setupMemoryBoard() {
+        matchedPairs = 0;
+        memMoves = 0;
+        flippedCards = [];
+        lockBoard = false;
+
+        document.getElementById("mem-pairs").textContent = "0";
+        document.getElementById("mem-total").textContent = memPairCount;
+        document.getElementById("mem-moves").textContent = "0";
+
+        // Sélectionner les notions (toutes les 11 ou 6 aléatoires)
+        let selectedData = [...LESSON_DATA];
+        if (memPairCount < LESSON_DATA.length) {
+          shuffleArray(selectedData);
+          selectedData = selectedData.slice(0, memPairCount);
         }
 
-        function finishQuiz() {
-            stopTimer();
-            SFX.win();
-            launchConfetti();
+        // Créer les paires (1 carte Question + 1 carte Réponse)
+        memCards = [];
+        selectedData.forEach((item) => {
+          memCards.push({
+            pairId: item.id,
+            type: "Q",
+            icon: item.icon,
+            text: item.shortQ,
+          });
+          memCards.push({
+            pairId: item.id,
+            type: "R",
+            icon: "✅",
+            text: item.shortA,
+          });
+        });
 
-            const ratio = quizCorrectCount / quizQuestions.length;
-            let stars = '⭐';
-            let title = 'Continue tes efforts !';
-            if (ratio >= 0.85) {
-                stars = '⭐⭐⭐';
-                title = 'Champion de l\'Histoire !';
-            } else if (ratio >= 0.55) {
-                stars = '⭐⭐';
-                title = 'Très bon travail !';
-            }
+        shuffleArray(memCards);
 
-            showResults({
-                stars,
-                title,
-                subtitle: `Tu as trouvé ${quizCorrectCount} bonnes réponses sur ${quizQuestions.length} questions.`,
-                stat1Label: 'Réussite',
-                stat1Val: `${quizCorrectCount}/${quizQuestions.length}`,
-                stat2Label: 'Score',
-                stat2Val: `${quizScore} pts`,
-                stat3Val: formatTime(secondsElapsed)
-            });
+        // Adapter la grille selon le nombre de cartes
+        const grid = document.getElementById("memory-grid");
+        grid.innerHTML = "";
+        if (memPairCount === 6) {
+          grid.className =
+            "grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-3xl mx-auto";
+        } else {
+          grid.className =
+            "grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3";
         }
 
-        /**
-         * ==========================================
-         * MODE 2 : MEMORY (PAIRES Q / R)
-         * ==========================================
-         */
-        let memPairCount = 11;
-        let memCards = [];
-        let flippedCards = [];
-        let matchedPairs = 0;
-        let memMoves = 0;
-        let lockBoard = false;
+        memCards.forEach((cardData, index) => {
+          const isQuestion = cardData.type === "Q";
+          const cardEl = document.createElement("div");
+          cardEl.className = "perspective-1000 h-32 sm:h-36 cursor-pointer";
+          cardEl.dataset.index = index;
 
-        function startMemory(pairCount) {
-            SFX.click();
-            currentMode = 'memory';
-            memPairCount = pairCount;
-            setupMemoryBoard();
-            showScreen('screen-memory');
-            startTimer('mem-timer');
-        }
+          // Couleurs distinctes : Bleu pour Question, Rouge/Corail pour Réponse
+          const backBg = isQuestion
+            ? "bg-gradient-to-br from-blue-600 to-blue-700 border-blue-400"
+            : "bg-gradient-to-br from-red-600 to-red-700 border-red-400";
 
-        function restartMemory() {
-            SFX.click();
-            setupMemoryBoard();
-            startTimer('mem-timer');
-        }
+          const frontBorder = isQuestion
+            ? "border-blue-400 bg-blue-50/70"
+            : "border-red-400 bg-red-50/70";
 
-        function setupMemoryBoard() {
-            matchedPairs = 0;
-            memMoves = 0;
-            flippedCards = [];
-            lockBoard = false;
+          const badgeStyle = isQuestion
+            ? "bg-blue-600 text-white"
+            : "bg-red-600 text-white";
 
-            document.getElementById('mem-pairs').textContent = '0';
-            document.getElementById('mem-total').textContent = memPairCount;
-            document.getElementById('mem-moves').textContent = '0';
-
-            // Sélectionner les notions (toutes les 11 ou 6 aléatoires)
-            let selectedData = [...LESSON_DATA];
-            if (memPairCount < LESSON_DATA.length) {
-                shuffleArray(selectedData);
-                selectedData = selectedData.slice(0, memPairCount);
-            }
-
-            // Créer les paires (1 carte Question + 1 carte Réponse)
-            memCards = [];
-            selectedData.forEach(item => {
-                memCards.push({
-                    pairId: item.id,
-                    type: 'Q',
-                    icon: item.icon,
-                    text: item.shortQ
-                });
-                memCards.push({
-                    pairId: item.id,
-                    type: 'R',
-                    icon: '✅',
-                    text: item.shortA
-                });
-            });
-
-            shuffleArray(memCards);
-
-            // Adapter la grille selon le nombre de cartes
-            const grid = document.getElementById('memory-grid');
-            grid.innerHTML = '';
-            if (memPairCount === 6) {
-                grid.className = 'grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-3xl mx-auto';
-            } else {
-                grid.className = 'grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3';
-            }
-
-            memCards.forEach((cardData, index) => {
-                const isQuestion = cardData.type === 'Q';
-                const cardEl = document.createElement('div');
-                cardEl.className = 'perspective-1000 h-32 sm:h-36 cursor-pointer';
-                cardEl.dataset.index = index;
-
-                // Couleurs distinctes : Bleu pour Question, Rouge/Corail pour Réponse
-                const backBg = isQuestion
-                    ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-blue-400'
-                    : 'bg-gradient-to-br from-red-600 to-red-700 border-red-400';
-
-                const frontBorder = isQuestion
-                    ? 'border-blue-400 bg-blue-50/70'
-                    : 'border-red-400 bg-red-50/70';
-
-                const badgeStyle = isQuestion
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-red-600 text-white';
-
-                cardEl.innerHTML = `
+          cardEl.innerHTML = `
                     <div class="card-inner relative w-full h-full transform-style-3d shadow-md rounded-2xl">
                         <!-- Face cachée (Dos de la carte) -->
                         <div class="backface-hidden absolute inset-0 rounded-2xl border-2 ${backBg} text-white flex flex-col items-center justify-center p-2 shadow-inner">
-                            <span class="text-2xl sm:text-3xl mb-1">${isQuestion ? '❓' : '💡'}</span>
+                            <span class="text-2xl sm:text-3xl mb-1">${isQuestion ? "❓" : "💡"}</span>
                             <span class="font-title font-bold text-xs sm:text-sm uppercase tracking-wider opacity-90">
-                                ${isQuestion ? 'Question' : 'Réponse'}
+                                ${isQuestion ? "Question" : "Réponse"}
                             </span>
                         </div>
 
@@ -947,7 +1248,7 @@
                         <div class="backface-hidden rotate-y-180 absolute inset-0 rounded-2xl border-2 ${frontBorder} bg-white p-2.5 flex flex-col justify-between items-center text-center">
                             <div class="w-full flex items-center justify-between">
                                 <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded ${badgeStyle}">
-                                    ${isQuestion ? 'QUESTION' : 'RÉPONSE'}
+                                    ${isQuestion ? "QUESTION" : "RÉPONSE"}
                                 </span>
                                 <span class="text-base">${cardData.icon}</span>
                             </div>
@@ -959,113 +1260,125 @@
                     </div>
                 `;
 
-                cardEl.onclick = () => handleCardClick(cardEl, cardData);
-                grid.appendChild(cardEl);
+          cardEl.onclick = () => handleCardClick(cardEl, cardData);
+          grid.appendChild(cardEl);
+        });
+      }
+
+      function handleCardClick(cardEl, cardData) {
+        if (lockBoard) return;
+        const inner = cardEl.querySelector(".card-inner");
+        if (inner.classList.contains("rotate-y-180")) return; // Déjà retournée
+
+        SFX.flip();
+        inner.classList.add("rotate-y-180");
+        flippedCards.push({ el: cardEl, inner, data: cardData });
+
+        if (flippedCards.length === 2) {
+          memMoves++;
+          document.getElementById("mem-moves").textContent = memMoves;
+          checkMemoryMatch();
+        }
+      }
+
+      function checkMemoryMatch() {
+        lockBoard = true;
+        const [first, second] = flippedCards;
+
+        // Une paire est valide si même pairId ET types différents (1 Question + 1 Réponse)
+        const isMatch =
+          first.data.pairId === second.data.pairId &&
+          first.data.type !== second.data.type;
+
+        if (isMatch) {
+          setTimeout(() => {
+            SFX.correct();
+            matchedPairs++;
+            document.getElementById("mem-pairs").textContent = matchedPairs;
+
+            // Marquer visuellement comme validé
+            [first.el, second.el].forEach((el) => {
+              const front = el.querySelector(".rotate-y-180");
+              front.classList.remove(
+                "border-blue-400",
+                "border-red-400",
+                "bg-white",
+              );
+              front.classList.add(
+                "border-emerald-500",
+                "bg-emerald-50",
+                "ring-2",
+                "ring-emerald-300",
+              );
             });
-        }
 
-        function handleCardClick(cardEl, cardData) {
-            if (lockBoard) return;
-            const inner = cardEl.querySelector('.card-inner');
-            if (inner.classList.contains('rotate-y-180')) return; // Déjà retournée
+            flippedCards = [];
+            lockBoard = false;
 
-            SFX.flip();
-            inner.classList.add('rotate-y-180');
-            flippedCards.push({ el: cardEl, inner, data: cardData });
-
-            if (flippedCards.length === 2) {
-                memMoves++;
-                document.getElementById('mem-moves').textContent = memMoves;
-                checkMemoryMatch();
+            if (matchedPairs === memPairCount) {
+              finishMemory();
             }
+          }, 400);
+        } else {
+          setTimeout(() => {
+            SFX.wrong();
+            first.inner.classList.remove("rotate-y-180");
+            second.inner.classList.remove("rotate-y-180");
+            flippedCards = [];
+            lockBoard = false;
+          }, 1150);
+        }
+      }
+
+      function finishMemory() {
+        stopTimer();
+        SFX.win();
+        launchConfetti();
+
+        // Calcul des étoiles selon l'efficacité (nombre de coups)
+        const idealMoves = memPairCount;
+        let stars = "⭐⭐";
+        let title = "Bravo, toutes les paires sont trouvées !";
+        if (memMoves <= idealMoves * 1.7) {
+          stars = "⭐⭐⭐";
+          title = "Mémoire d'éléphant !";
+        } else if (memMoves > idealMoves * 2.8) {
+          stars = "⭐";
+          title = "Bien joué, continue à t'entraîner !";
         }
 
-        function checkMemoryMatch() {
-            lockBoard = true;
-            const [first, second] = flippedCards;
+        showResults({
+          stars,
+          title,
+          subtitle: `Tu as associé les ${memPairCount} paires de la leçon en ${memMoves} coups.`,
+          stat1Label: "Paires",
+          stat1Val: `${memPairCount}/${memPairCount}`,
+          stat2Label: "Coups",
+          stat2Val: `${memMoves}`,
+          stat3Val: formatTime(secondsElapsed),
+        });
+      }
 
-            // Une paire est valide si même pairId ET types différents (1 Question + 1 Réponse)
-            const isMatch = (first.data.pairId === second.data.pairId) && (first.data.type !== second.data.type);
+      /**
+       * ==========================================
+       * ÉCRAN DE RÉSULTATS & AIDE-MÉMOIRE
+       * ==========================================
+       */
+      function showResults(data) {
+        document.getElementById("result-stars").textContent = data.stars;
+        document.getElementById("result-title").textContent = data.title;
+        document.getElementById("result-subtitle").textContent = data.subtitle;
 
-            if (isMatch) {
-                setTimeout(() => {
-                    SFX.correct();
-                    matchedPairs++;
-                    document.getElementById('mem-pairs').textContent = matchedPairs;
+        document.getElementById("stat-1-label").textContent = data.stat1Label;
+        document.getElementById("stat-1-val").textContent = data.stat1Val;
+        document.getElementById("stat-2-label").textContent = data.stat2Label;
+        document.getElementById("stat-2-val").textContent = data.stat2Val;
+        document.getElementById("stat-3-val").textContent = data.stat3Val;
 
-                    // Marquer visuellement comme validé
-                    [first.el, second.el].forEach(el => {
-                        const front = el.querySelector('.rotate-y-180');
-                        front.classList.remove('border-blue-400', 'border-red-400', 'bg-white');
-                        front.classList.add('border-emerald-500', 'bg-emerald-50', 'ring-2', 'ring-emerald-300');
-                    });
-
-                    flippedCards = [];
-                    lockBoard = false;
-
-                    if (matchedPairs === memPairCount) {
-                        finishMemory();
-                    }
-                }, 400);
-            } else {
-                setTimeout(() => {
-                    SFX.wrong();
-                    first.inner.classList.remove('rotate-y-180');
-                    second.inner.classList.remove('rotate-y-180');
-                    flippedCards = [];
-                    lockBoard = false;
-                }, 1150);
-            }
-        }
-
-        function finishMemory() {
-            stopTimer();
-            SFX.win();
-            launchConfetti();
-
-            // Calcul des étoiles selon l'efficacité (nombre de coups)
-            const idealMoves = memPairCount;
-            let stars = '⭐⭐';
-            let title = 'Bravo, toutes les paires sont trouvées !';
-            if (memMoves <= idealMoves * 1.7) {
-                stars = '⭐⭐⭐';
-                title = 'Mémoire d\'éléphant !';
-            } else if (memMoves > idealMoves * 2.8) {
-                stars = '⭐';
-                title = 'Bien joué, continue à t\'entraîner !';
-            }
-
-            showResults({
-                stars,
-                title,
-                subtitle: `Tu as associé les ${memPairCount} paires de la leçon en ${memMoves} coups.`,
-                stat1Label: 'Paires',
-                stat1Val: `${memPairCount}/${memPairCount}`,
-                stat2Label: 'Coups',
-                stat2Val: `${memMoves}`,
-                stat3Val: formatTime(secondsElapsed)
-            });
-        }
-
-        /**
-         * ==========================================
-         * ÉCRAN DE RÉSULTATS & AIDE-MÉMOIRE
-         * ==========================================
-         */
-        function showResults(data) {
-            document.getElementById('result-stars').textContent = data.stars;
-            document.getElementById('result-title').textContent = data.title;
-            document.getElementById('result-subtitle').textContent = data.subtitle;
-
-            document.getElementById('stat-1-label').textContent = data.stat1Label;
-            document.getElementById('stat-1-val').textContent = data.stat1Val;
-            document.getElementById('stat-2-label').textContent = data.stat2Label;
-            document.getElementById('stat-2-val').textContent = data.stat2Val;
-            document.getElementById('stat-3-val').textContent = data.stat3Val;
-
-            // Remplir l'aide-mémoire complet
-            const list = document.getElementById('lesson-summary-list');
-            list.innerHTML = LESSON_DATA.map(item => `
+        // Remplir l'aide-mémoire complet
+        const list = document.getElementById("lesson-summary-list");
+        list.innerHTML = LESSON_DATA.map(
+          (item) => `
                 <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm">
                     <div class="font-bold text-blue-900 flex items-center gap-1.5">
                         <span>${item.icon}</span>
@@ -1075,114 +1388,115 @@
                         👉 ${item.explanation}
                     </div>
                 </div>
-            `).join('');
+            `,
+        ).join("");
 
-            list.classList.add('hidden');
-            document.getElementById('summary-arrow').textContent = '▼';
+        list.classList.add("hidden");
+        document.getElementById("summary-arrow").textContent = "▼";
 
-            showScreen('screen-results');
+        showScreen("screen-results");
+      }
+
+      function replayCurrentMode() {
+        if (currentMode === "quiz") {
+          startQuiz();
+        } else {
+          startMemory(memPairCount);
+        }
+      }
+
+      function toggleSummary() {
+        SFX.click();
+        const list = document.getElementById("lesson-summary-list");
+        const arrow = document.getElementById("summary-arrow");
+        list.classList.toggle("hidden");
+        arrow.textContent = list.classList.contains("hidden") ? "▼" : "▲";
+      }
+
+      /**
+       * UTILITAIRES & ANIMATION CONFETTIS
+       */
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      // Système de confettis bleu-blanc-rouge-or
+      let confettiAnimationId = null;
+      let particles = [];
+
+      function launchConfetti() {
+        const canvas = document.getElementById("confetti-canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ["#2563eb", "#ffffff", "#dc2626", "#f59e0b", "#10b981"];
+        particles = [];
+
+        for (let i = 0; i < 110; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            w: Math.random() * 10 + 6,
+            h: Math.random() * 6 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedY: Math.random() * 3 + 2,
+            speedX: Math.random() * 2 - 1,
+            angle: Math.random() * 360,
+            spin: Math.random() * 6 - 3,
+          });
         }
 
-        function replayCurrentMode() {
-            if (currentMode === 'quiz') {
-                startQuiz();
-            } else {
-                startMemory(memPairCount);
+        function animateConfetti() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.angle += p.spin;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.angle * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+
+            if (p.y > canvas.height) {
+              p.y = -10;
+              p.x = Math.random() * canvas.width;
             }
+          });
+          confettiAnimationId = requestAnimationFrame(animateConfetti);
         }
 
-        function toggleSummary() {
-            SFX.click();
-            const list = document.getElementById('lesson-summary-list');
-            const arrow = document.getElementById('summary-arrow');
-            list.classList.toggle('hidden');
-            arrow.textContent = list.classList.contains('hidden') ? '▼' : '▲';
+        stopConfetti();
+        animateConfetti();
+        setTimeout(stopConfetti, 5000);
+      }
+
+      function stopConfetti() {
+        if (confettiAnimationId) {
+          cancelAnimationFrame(confettiAnimationId);
+          confettiAnimationId = null;
         }
-
-        /**
-         * UTILITAIRES & ANIMATION CONFETTIS
-         */
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+        const canvas = document.getElementById("confetti-canvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+      }
 
-        // Système de confettis bleu-blanc-rouge-or
-        let confettiAnimationId = null;
-        let particles = [];
-
-        function launchConfetti() {
-            const canvas = document.getElementById('confetti-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const colors = ['#2563eb', '#ffffff', '#dc2626', '#f59e0b', '#10b981'];
-            particles = [];
-
-            for (let i = 0; i < 110; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    w: Math.random() * 10 + 6,
-                    h: Math.random() * 6 + 4,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    speedY: Math.random() * 3 + 2,
-                    speedX: Math.random() * 2 - 1,
-                    angle: Math.random() * 360,
-                    spin: Math.random() * 6 - 3
-                });
-            }
-
-            function animateConfetti() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
-                    p.y += p.speedY;
-                    p.x += p.speedX;
-                    p.angle += p.spin;
-
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate((p.angle * Math.PI) / 180);
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-                    ctx.restore();
-
-                    if (p.y > canvas.height) {
-                        p.y = -10;
-                        p.x = Math.random() * canvas.width;
-                    }
-                });
-                confettiAnimationId = requestAnimationFrame(animateConfetti);
-            }
-
-            stopConfetti();
-            animateConfetti();
-            setTimeout(stopConfetti, 5000);
+      window.addEventListener("resize", () => {
+        const canvas = document.getElementById("confetti-canvas");
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
         }
-
-        function stopConfetti() {
-            if (confettiAnimationId) {
-                cancelAnimationFrame(confettiAnimationId);
-                confettiAnimationId = null;
-            }
-            const canvas = document.getElementById('confetti-canvas');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-        }
-
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('confetti-canvas');
-            if (canvas) {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-        });
+      });
     </script>
-</body>
+  </body>
 </html>
